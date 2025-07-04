@@ -1,6 +1,10 @@
 # Conditional Build
 
 ## Description
+Fork from original repo here : https://github.com/AndrewPerson/Conditional-Build
+Add some little fixes
+* Make regex "golang" compatible
+* Trim leading spaces to find //#if, #//endif, #//else conditions
 
 This plugin (for esbuild) allows you conditionally exclude or include parts of javascript (or typescript) files at build time. You use `//#if`, `//#else`, and `//#endif` to do this.
 

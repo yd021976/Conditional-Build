@@ -4,7 +4,7 @@ export default (conditions = []) => {
     return {
         name: "conditional-compile",
         setup(build) {
-            build.onLoad({ filter: /\.[tj]sx?$/g, namespace: "file" }, async args => {
+            build.onLoad({ filter: /\.[tj]sx?$/, namespace: "file" }, async args => { // YDO: Update regex to be golang "compatible"
                 var file = await readFile(args.path, "utf8");
 
                 if (!file.startsWith("//#conditional")) return;
@@ -14,11 +14,11 @@ export default (conditions = []) => {
                 var statements = [];
                 for (var i = 0; i < lines.length; i++) {
                     var line = lines[i];
-
+                    line = line.trimStart(); // YDO:Remove leading spaces
                     if (line.startsWith("//#if")) {
                         var condition = line.substring(5).trim();
                         var invert = false;
-                    
+
                         if (condition.startsWith("!")) {
                             condition = condition.substring(1).trim();
                             invert = true;
@@ -27,7 +27,8 @@ export default (conditions = []) => {
                         statements.push({
                             condition: condition,
                             invert: invert,
-                            start: lines.indexOf(line),
+                            // start: lines.indexOf(line),
+                            start: lines.indexOf(lines[i]), // YDO: modified to find current line as in line 17 we trim leadings spaces
                             else: false,
                             elsePos: -1
                         });
@@ -48,7 +49,7 @@ export default (conditions = []) => {
                         var statement = statements.pop();
 
                         if (!statement) throw new Error(`Unexpected endif at line ${i + 1}`);
-                        
+
                         var isTrue = conditions.includes(statement.condition);
 
                         if (statement.invert) isTrue = !isTrue;
