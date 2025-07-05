@@ -1,5 +1,8 @@
 import { readFile } from "fs/promises";
 
+/**
+ * 
+ */
 export default (conditions = []) => {
     return {
         name: "conditional-compile",
