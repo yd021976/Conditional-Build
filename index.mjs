@@ -1,7 +1,7 @@
 import { readFile } from "fs/promises";
 
 /**
- * 
+ * Hello
  */
 export default (conditions = []) => {
     return {
